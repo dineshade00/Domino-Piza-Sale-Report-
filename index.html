@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domino's Sales Report</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #f7f7f7;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .header {
+            background-color: #7A1E9E;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .header input {
+            border-radius: 3px;
+            padding: 8px;
+            margin-right: 10px;
+            width: 160px;
+            border: 1px solid #ddd;
+        }
+
+        .sidebar {
+            background-color: #fff;
+            border-right: 1px solid #ddd;
+            height: 100vh;
+            padding: 20px;
+            font-size: 16px;
+        }
+
+        .sidebar h5 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .sidebar a {
+            color: #007bff;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            height: 120px;
+            margin-bottom: 20px;
+        }
+
+        .card h5 {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .card h2 {
+            font-size: 28px;
+            margin-top: 10px;
+        }
+
+        .chart-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            height: 260px;
+        }
+
+        .chart-container canvas {
+            width: 100% !important;
+            height: 200px !important;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #7A1E9E;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Counter animation styles */
+        .counter {
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <div class="header">
+        <h1><i class="fas fa-pizza-slice"></i> DOMINO'S SALES REPORT</h1>
+        <div>
+            <input type="text" placeholder="Pizza Category">
+            <input type="date" value="2015-01-01">
+            <input type="date" value="2015-12-31">
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar">
+                <h5>HOME</h5>
+                <a href="#">Best/Worst Seller</a>
+                <h5>Busiest Days</h5>
+                <a href="#">Days: Friday/Saturday</a>
+                <a href="#">Monthly: July/Jan</a>
+                <h5>Sales Performance</h5>
+                <a href="#">Category: Classic</a>
+                <a href="#">Size: Large</a>
+            </div>
+
+            <!-- Dashboard Cards and Charts -->
+            <div class="col-md-10">
+                <!-- Cards Row -->
+                <div class="row text-center">
+                    <div class="col-md-2">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body">
+                                <h5>Total Revenue</h5>
+                                <h2 class="counter" data-target="817860">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card bg-success text-white">
+                            <div class="card-body">
+                                <h5>Average Order Value</h5>
+                                <h2 class="counter" data-target="38.31">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card bg-info text-white">
+                            <div class="card-body">
+                                <h5>Total Pizzas Sold</h5>
+                                <h2 class="counter" data-target="50000">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card bg-warning text-white">
+                            <div class="card-body">
+                                <h5>Total Orders</h5>
+                                <h2 class="counter" data-target="21000">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card bg-danger text-white">
+                            <div class="card-body">
+                                <h5>Avg Pizzas per Order</h5>
+                                <h2 class="counter" data-target="2.32">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="row">
+                    <div class="col-md-8 chart-container">
+                        <h5>Daily Trend for Total Orders</h5>
+                        <canvas id="dailyTrendChart"></canvas>
+                    </div>
+                    <div class="col-md-4 chart-container">
+                        <h5>Monthly Trend for Total Orders</h5>
+                        <canvas id="monthlyTrendChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 chart-container">
+                        <h5>% of Sales by Pizza Category</h5>
+                        <canvas id="categorySalesChart"></canvas>
+                    </div>
+                    <div class="col-md-6 chart-container">
+                        <h5>Total Pizzas Sold by Pizza Category</h5>
+                        <canvas id="totalPizzasChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Domino's Sales Report | Jan 2023 - Dec 2023
+    </footer>
+
+    <!-- Scripts for Charts and Counters -->
+    <script>
+        // Chart.js initialization (same as before)
+        const dailyTrendData = [2800, 3000, 3000, 3200, 3500, 3200, 2600];
+        const monthlyTrendData = [1845, 1840, 1853, 935, 1841, 1792];
+        const categorySalesData = [23.68, 26.91, 25.46, 23.96];
+        const totalPizzasSold = [14888, 11987, 11649, 11050];
+
+        const ctx1 = document.getElementById('dailyTrendChart').getContext('2d');
+        const dailyTrendChart = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Orders',
+                    data: dailyTrendData,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        const ctx2 = document.getElementById('monthlyTrendChart').getContext('2d');
+        const monthlyTrendChart = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Orders',
+                    data: monthlyTrendData,
+
+                    backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        const ctx3 = document.getElementById('categorySalesChart').getContext('2d');
+        const categorySalesChart = new Chart(ctx3, {
+            type: 'pie',
+            data: {
+                labels: ['Classic', 'Deluxe', 'Supreme', 'Veggie'],
+                datasets: [{
+                    label: '% of Sales',
+                    data: categorySalesData,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)'
+                    ],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        const ctx4 = document.getElementById('totalPizzasChart').getContext('2d');
+        const totalPizzasChart = new Chart(ctx4, {
+            type: 'bar',
+            data: {
+                labels: ['Classic', 'Deluxe', 'Supreme', 'Veggie'],
+                datasets: [{
+                    label: 'Total Pizzas Sold',
+                    data: totalPizzasSold,
+                    backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Counter Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const counters = document.querySelectorAll('.counter');
+
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+
+                    // Calculate the increment
+                    const increment = target / 200; // Adjust 200 for speed
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + increment);
+                        setTimeout(updateCount, 1); // Adjust the timeout for smoothness
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                updateCount();
+            });
+        });
+    </script>
+</body>
+
+</html>
